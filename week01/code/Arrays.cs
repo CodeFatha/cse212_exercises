@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 public static class Arrays
 {
     /// <summary>
@@ -6,14 +8,21 @@ public static class Arrays
     /// integer greater than 0.
     /// </summary>
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
+    /// 
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        //Declare a an list to hold the values as it is dynamic
+        List<double> multiples = new();
+        //Create a forloop with one as the floor and *length as the ceiling value
+        //Iterate through *length times and and multiply *number by index
+        for (int i = 1; i <= length; i++)
+        {
+            //Append the result of each iteration to the List
+            multiples.Add(number * i);
+        }
 
-        return []; // replace this return statement with your own
+        //Convert the list to an array
+        return multiples.ToArray();
     }
 
     /// <summary>
@@ -25,9 +34,13 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        //Declare an index
+        int index = data.Count - amount;
+        // Get target range and store it in a variable
+        List<int> targetRange = data.GetRange(index, amount);
+        // Remove the target range from the List
+        data.RemoveRange(index, amount);
+        // Add the range to the end of the List
+        data.InsertRange(0, targetRange);
     }
 }
