@@ -21,8 +21,20 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var wordSet = words.ToHashSet();
+        var pairs = new List<string>();
+
+        foreach (var word in words)
+        {
+            var reversed = new string(word.Reverse().ToArray());
+            if (wordSet.Contains(reversed) && word != reversed)
+            {
+                pairs.Add($"{word} & {reversed}");
+                wordSet.Remove(word);
+                wordSet.Remove(reversed);
+            }
+        }
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -42,7 +54,14 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            if (degrees.ContainsKey(fields[3]))
+            {
+                degrees[fields[3]]++;
+            }
+            else
+            {
+                degrees[fields[3]] = 1;
+            }
         }
 
         return degrees;
@@ -66,8 +85,16 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = word1.Replace(" ", "");
+        word2 = word2.Replace(" ", "");
+        if (word1.Length != word2.Length)
+        {
+            return false;
+        }
+        var dict1 = word1.ToLower().GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+        var dict2 = word2.ToLower().GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+
+        return !dict1.Except(dict2).Any();
     }
 
     /// <summary>
@@ -101,6 +128,6 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        return featureCollection.Features.Select(f => $"{f.Properties.Place} - Mag {f.Properties.Mag}").ToArray();
     }
 }
